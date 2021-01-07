@@ -56,6 +56,19 @@ class HomeBloc {
       -arr[0], //  arr[7],
       -arr[2], //   arr[8],
     ];
+    rawPoses[0] =
+        (rawPoses[0] * offsetAndSensitivity[0]) + offsetAndSensitivity[1];
+    rawPoses[1] =
+        (rawPoses[1] * offsetAndSensitivity[2]) + offsetAndSensitivity[3];
+    rawPoses[2] =
+        (rawPoses[2] * offsetAndSensitivity[4]) + offsetAndSensitivity[5];
+
+    rawPoses[3] =
+        (rawPoses[3] * offsetAndSensitivity[6]) + offsetAndSensitivity[7];
+    rawPoses[4] =
+        (rawPoses[4] * offsetAndSensitivity[8]) + offsetAndSensitivity[9];
+    rawPoses[5] =
+        (rawPoses[5] * offsetAndSensitivity[10]) + offsetAndSensitivity[11];
 
     await provider.sendPoses(ipAddress, port, rawPoses);
 

@@ -45,6 +45,7 @@ android {
     }
 
     defaultConfig {
+        // todo @low change to trackar
         applicationId "com.benalitechnologies.trackai2"
         minSdkVersion 24
         targetSdkVersion 28

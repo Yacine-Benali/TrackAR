@@ -6,7 +6,7 @@
     "configurations": [
         
         {   "flutterMode": "debug",
-            "name": "TackAi 2",
+            "name": "TackAR",
             "request": "launch",
             "type": "dart",
             "program": "lib\\main.dart"

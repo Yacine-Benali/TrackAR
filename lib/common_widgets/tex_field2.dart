@@ -42,33 +42,36 @@ class _TextField2State extends State<TextField2> {
         ).show(context),
         child: Container(
           color: AppColors.tileColor,
-          child: Row(
-            children: [
-              Expanded(flex: 1, child: Text(widget.title)),
-              Expanded(
-                flex: 2,
-                child: Center(child: Text(value)),
-              ),
-              Expanded(
-                flex: 1,
-                child: FlatButton(
-                  child: Align(
-                    alignment: Alignment.centerRight,
-                    child: Icon(Icons.edit),
-                  ),
-                  onPressed: () => InputDialog(
-                    validator: widget.validator,
-                    onValueChanged: (String newValue) {
-                      value = newValue;
-                      widget.onValueChanged(newValue);
-                      setState(() {});
-                    },
-                    title: widget.title,
-                    initialValue: value,
-                  ).show(context),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(flex: 1, child: Text(widget.title)),
+                Expanded(
+                  flex: 2,
+                  child: Center(child: Text(value)),
                 ),
-              ),
-            ],
+                Expanded(
+                  flex: 1,
+                  child: FlatButton(
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(Icons.edit),
+                    ),
+                    onPressed: () => InputDialog(
+                      validator: widget.validator,
+                      onValueChanged: (String newValue) {
+                        value = newValue;
+                        widget.onValueChanged(newValue);
+                        setState(() {});
+                      },
+                      title: widget.title,
+                      initialValue: value,
+                    ).show(context),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

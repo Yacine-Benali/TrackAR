@@ -28,7 +28,7 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
   HomeProvider provider;
   String ipAddress;
   int port;
-
+  bool isEnabled;
   List<double> offsetsAndSensitivity;
 
   NativeDeviceOrientationCommunicator orientationService =
@@ -38,7 +38,7 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
   @override
   void initState() {
     offsetsAndSensitivity = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-
+    isEnabled = true;
     screenOrientation = NativeDeviceOrientation.portraitUp;
     final DynamicLibrary nativeAddLib = Platform.isAndroid
         ? DynamicLibrary.open("libnative_opencv.so")
@@ -64,111 +64,131 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
   @override
   Widget build(BuildContext context) {
     SizeConfig.init(context);
-    return Scaffold(
-      extendBody: true,
-      backgroundColor: AppColors.backgroundColor,
-      appBar: AppBar(
-        elevation: 0,
+    return Container(
+      color: Colors.red,
+      child: Scaffold(
+        extendBody: true,
         backgroundColor: AppColors.backgroundColor,
-        centerTitle: true,
-        title: Text('TrackAR'),
-      ),
-      body: SizedBox.expand(
-        child: FutureBuilder(
-          future: Future.wait([bloc.getIpAddress(), bloc.getPort()]),
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              ipAddress = snapshot.data[0] ?? '192.168.1.3';
-              port = snapshot.data[1] ?? 4242;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: SizedBox(
-                        width: SizeConfig.blockSizeVertical * 30,
-                        height: SizeConfig.blockSizeVertical * 30,
-                        child: FaceDetectionScreen(
-                          onFaceDetected: (List<double> values) {
-                            bloc.sendFace(ipAddress, port, values);
-                          },
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: AppColors.backgroundColor,
+          centerTitle: true,
+          title: Text('TrackAR'),
+        ),
+        body: SizedBox.expand(
+          child: FutureBuilder(
+            future: Future.wait([bloc.getIpAddress(), bloc.getPort()]),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                ipAddress = snapshot.data[0] ?? '192.168.1.3';
+                port = snapshot.data[1] ?? 4242;
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: SizedBox(
+                          width: SizeConfig.blockSizeVertical * 30,
+                          height: SizeConfig.blockSizeVertical * 30,
+                          child: FaceDetectionScreen(
+                            onFaceDetected: (List<double> values) {
+                              bloc.sendFace(ipAddress, port, values);
+                            },
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: RotatedBox(
-                      quarterTurns: 0,
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 5),
-                            TextField2(
-                              validator: (value) =>
-                                  ipAdressValidator.validate(value),
-                              onValueChanged: (value) {
-                                ipAddress = value;
-                                bloc.setIpAddress(value);
-                              },
-                              title: 'IP Address',
-                              initialValue: ipAddress,
-                            ),
-                            Divider(height: 0.5),
-                            TextField2(
-                              validator: (value) =>
-                                  portValidator.validate(value),
-                              onValueChanged: (value) {
-                                port = int.parse(value);
-                                bloc.setPort(port);
-                              },
-                              title: 'Port',
-                              initialValue: port.toString(),
-                            ),
-                            Divider(height: 0.5),
-                            CustomizationWidget(
-                              onValueChanged: (l) =>
-                                  bloc.offsetAndSensitivity = l,
-                            ),
-                            Divider(height: 0.5),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RaisedButton(
-                                color: AppColors.primaryColor,
-                                onPressed: () async => await Navigator.of(
-                                        context,
-                                        rootNavigator: false)
-                                    .push(
-                                  MaterialPageRoute(
-                                    builder: (context) => InstructionScreen(),
-                                    fullscreenDialog: true,
-                                  ),
-                                ),
-                                child: const Text(
-                                  'Instructions',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.black,
+                    Expanded(
+                      child: RotatedBox(
+                        quarterTurns: 0,
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 5),
+                              TextField2(
+                                validator: (value) =>
+                                    ipAdressValidator.validate(value),
+                                onValueChanged: (value) {
+                                  ipAddress = value;
+                                  bloc.setIpAddress(value);
+                                },
+                                title: 'IP Address',
+                                initialValue: ipAddress,
+                              ),
+                              Divider(height: 0.5),
+                              TextField2(
+                                validator: (value) =>
+                                    portValidator.validate(value),
+                                onValueChanged: (value) {
+                                  port = int.parse(value);
+                                  bloc.setPort(port);
+                                },
+                                title: 'Port',
+                                initialValue: port.toString(),
+                              ),
+                              Divider(height: 0.5),
+                              CustomizationWidget(
+                                onValueChanged: (l) =>
+                                    bloc.offsetAndSensitivity = l,
+                              ),
+                              Divider(height: 0.5),
+                              Container(
+                                color: AppColors.tileColor,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SwitchListTile(
+                                    contentPadding: const EdgeInsets.all(0.0),
+                                    title: const Text('enabled'),
+                                    value: isEnabled,
+                                    activeColor: AppColors.primaryColor,
+                                    onChanged: (bool value) async {
+                                      setState(() {
+                                        isEnabled = value;
+                                      });
+                                    },
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RaisedButton(
+                                  color: AppColors.primaryColor,
+                                  onPressed: () async => await Navigator.of(
+                                          context,
+                                          rootNavigator: false)
+                                      .push(
+                                    MaterialPageRoute(
+                                      builder: (context) => InstructionScreen(),
+                                      fullscreenDialog: true,
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'Instructions',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return EmptyContent(
-                title: 'Something went wrong',
-                message: 'Can\'t load items right now',
-              );
-            }
-            return Center(child: CircularProgressIndicator());
-          },
+                  ],
+                );
+              } else if (snapshot.hasError) {
+                return EmptyContent(
+                  title: 'Something went wrong',
+                  message: 'Can\'t load items right now',
+                );
+              }
+              return Center(child: CircularProgressIndicator());
+            },
+          ),
         ),
       ),
     );

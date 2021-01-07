@@ -87,25 +87,28 @@ class _CustomizationWidgetState extends State<CustomizationWidget> {
       color: AppColors.tileColor,
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Sensitivity and offset',
-                style: TextStyle(fontSize: 16),
-              ),
-              IconButton(
-                icon: Icon(
-                  Icons.restore,
-                  size: 30,
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Sensitivity and offset',
+                  style: TextStyle(fontSize: 16),
                 ),
-                onPressed: () {
-                  reset();
-                  save();
-                  setState(() {});
-                },
-              )
-            ],
+                IconButton(
+                  icon: Icon(
+                    Icons.restore,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    reset();
+                    save();
+                    setState(() {});
+                  },
+                )
+              ],
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),

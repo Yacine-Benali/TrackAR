@@ -39,6 +39,7 @@ class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
           value[5],
           value[6],
         ];
+
         widget.onFaceDetected(l);
       },
       cancelOnError: true,
@@ -49,10 +50,9 @@ class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
   loadMesh() async {
     final ByteData textureBytes =
         await rootBundle.load('assets/fox_face_mesh_texture.png');
-
     arCoreFaceController.loadMesh(
-        textureBytes: textureBytes.buffer.asUint8List(),
-        skin3DModelFilename: 'fox_face.sfb');
+      textureBytes: textureBytes.buffer.asUint8List(),
+    );
   }
 
   @override

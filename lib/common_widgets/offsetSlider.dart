@@ -30,39 +30,43 @@ class _OffsetSliderState extends State<OffsetSlider> {
     return Container(
       color: AppColors.tileColor,
       height: 75,
-      child: Row(
-        children: [
-          Expanded(flex: 1, child: Text(widget.title)),
-          Expanded(
-            flex: 2,
-            child: Slider(
-              value: _currentSliderValue,
-              min: -75,
-              max: 75,
-              divisions: 20,
-              activeColor: AppColors.primaryColor,
-              label: _currentSliderValue.toString(),
-              onChanged: (double value) {
-                widget.onValueChanged(value);
-                setState(() {
-                  _currentSliderValue = value;
-                });
-              },
-            ),
-          ),
-          Expanded(
-            flex: 1,
-            child: FlatButton(
-              onPressed: () => setState(() {
-                _currentSliderValue = widget.initialValue;
-              }),
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Icon(Icons.restore),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          children: [
+            Expanded(flex: 1, child: Text(widget.title)),
+            Expanded(
+              flex: 2,
+              child: Slider(
+                value: _currentSliderValue,
+                min: -75,
+                max: 75,
+                divisions: 20,
+                activeColor: AppColors.primaryColor,
+                label: _currentSliderValue.toString(),
+                onChanged: (double value) {
+                  widget.onValueChanged(value);
+                  setState(() {
+                    _currentSliderValue = value;
+                  });
+                },
               ),
             ),
-          )
-        ],
+            Expanded(
+              flex: 1,
+              child: FlatButton(
+                onPressed: () => setState(() {
+                  _currentSliderValue = widget.initialValue;
+                  widget.onValueChanged(_currentSliderValue);
+                }),
+                child: Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(Icons.restore),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

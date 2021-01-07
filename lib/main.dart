@@ -20,8 +20,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); // d
-    //TODO @low ios changes https://github.com/flutter/flutter/issues/27235
+    //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); // d
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'title go brrr',

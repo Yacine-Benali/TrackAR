@@ -48,8 +48,7 @@ class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
   }
 
   loadMesh() async {
-    final ByteData textureBytes =
-        await rootBundle.load('assets/fox_face_mesh_texture.png');
+    final ByteData textureBytes = await rootBundle.load('assets/empty.png');
     arCoreFaceController.loadMesh(
       textureBytes: textureBytes.buffer.asUint8List(),
     );

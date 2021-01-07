@@ -1,18 +1,16 @@
 import 'dart:ffi';
+import 'dart:math' as math;
 
 import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:headtrack/app/home_provider.dart';
-import 'package:headtrack/constants/constants.dart';
 
 class HomeBloc {
   HomeBloc({
-    @required this.quaternion2eulerC,
     @required this.provider,
     @required this.offsetAndSensitivity,
   });
-  final quaternion2EulerC quaternion2eulerC;
   final HomeProvider provider;
   List<double> offsetAndSensitivity;
 
@@ -33,6 +31,52 @@ class HomeBloc {
     return ptr;
   }
 
+  List<double> q2c(List<double> q) {
+    var w = q[0];
+    var x = q[1];
+    var y = q[2];
+    var z = q[3];
+
+    var ret = List<double>(3);
+
+    var test = x * y + z * w;
+    if (test > 0.4999) {
+      ret[2] = 2.0 * math.atan2(x, w);
+      ret[1] = math.pi / 2;
+      ret[0] = 0.0;
+
+      q[0] = ret[0];
+      q[2] = ret[1];
+      q[1] = ret[2];
+
+      return q;
+    }
+    if (test < -0.4999) {
+      ret[2] = 2.0 * math.atan2(x, w);
+      ret[1] = -math.pi / 2;
+      ret[0] = 0.0;
+      q[0] = ret[0];
+      q[2] = ret[1];
+      q[1] = ret[2];
+      return q;
+    }
+    var sqx = x * x;
+    var sqy = y * y;
+    var sqz = z * z;
+    ret[2] = math.atan2(2.0 * y * w - 2.0 * x * z, 1.0 - 2.0 * sqy - 2.0 * sqz);
+    ret[1] = math.asin(2.0 * test);
+    ret[0] = math.atan2(2.0 * x * w - 2.0 * z * y, 1.0 - 2.0 * sqx - 2.0 * sqz);
+
+    ret[0] *= 180 / math.pi;
+    ret[1] *= 180 / math.pi;
+    ret[2] *= 180 / math.pi;
+
+    q[0] = ret[0];
+    q[2] = ret[1];
+    q[1] = ret[2];
+    return q;
+  }
+
   void sendFace(
     String ipAddress,
     int port,
@@ -42,8 +86,7 @@ class HomeBloc {
 
     final listPtr = intListToArray(q);
 
-    final arrayPointer = quaternion2eulerC(listPtr);
-    final arr = arrayPointer.asTypedList(3);
+    final arr = q2c(q);
 
     List<double> rawPoses = [
       l[0] * 100, // -arr[6],

@@ -1,6 +1,3 @@
-import 'dart:ffi';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:headtrack/app/face_detection/face_detection_screen.dart';
@@ -11,7 +8,6 @@ import 'package:headtrack/common_widgets/empty_content.dart';
 import 'package:headtrack/common_widgets/tex_field2.dart';
 import 'package:headtrack/common_widgets/validator.dart';
 import 'package:headtrack/constants/app_colors.dart';
-import 'package:headtrack/constants/constants.dart';
 import 'package:headtrack/constants/size_config.dart';
 import 'package:headtrack/services/local_storage_service.dart';
 import 'package:overlay_screen/overlay_screen.dart';
@@ -37,20 +33,9 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
   void initState() {
     offsetsAndSensitivity = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     isEnabled = true;
-    final DynamicLibrary nativeAddLib = Platform.isAndroid
-        ? DynamicLibrary.open("libnative_opencv.so")
-        : DynamicLibrary.process();
-
-    //! Quaternion2Euler
-    final quaternion2EulerCFun = nativeAddLib
-        .lookup<NativeFunction<quaternion2EulerC>>('quaternion2Euler');
-
-    final quaternion2EulerDFun =
-        quaternion2EulerCFun.asFunction<quaternion2EulerC>();
 
     provider = HomeProvider();
     bloc = HomeBloc(
-      quaternion2eulerC: quaternion2EulerDFun,
       provider: provider,
       offsetAndSensitivity: offsetsAndSensitivity,
     );

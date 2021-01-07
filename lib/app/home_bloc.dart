@@ -40,7 +40,6 @@ class HomeBloc {
     String ipAddress,
     int port,
     List<double> l,
-    int milliseconds,
   ) async {
     List<double> q = [l[6], l[3], l[4], l[5]]; // {qw, qx, qy, qz}.
 
@@ -58,12 +57,7 @@ class HomeBloc {
       -arr[2], //   arr[8],
     ];
 
-    // rightToTable(milliseconds, kalmanPoses, rawPoses);
-    // if (sendFilter) {
-    //   await provider.sendPoses(ipAddress, port, kalmanPoses);
-    // } else {
     await provider.sendPoses(ipAddress, port, rawPoses);
-    // }
 
     free(listPtr);
   }

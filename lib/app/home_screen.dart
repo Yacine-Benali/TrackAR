@@ -71,7 +71,7 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
         elevation: 0,
         backgroundColor: AppColors.backgroundColor,
         centerTitle: true,
-        title: Text('TrackAI'),
+        title: Text('TrackAR'),
       ),
       body: SizedBox.expand(
         child: FutureBuilder(
@@ -91,7 +91,9 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
                         width: SizeConfig.blockSizeVertical * 30,
                         height: SizeConfig.blockSizeVertical * 30,
                         child: FaceDetectionScreen(
-                          bloc: bloc,
+                          onFaceDetected: (List<double> values) {
+                            bloc.sendFace(ipAddress, port, values);
+                          },
                         ),
                       ),
                     ),
@@ -103,7 +105,6 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
                         child: Column(
                           children: [
                             const SizedBox(height: 5),
-                            //TODO @low abtract validators in seperate class
                             TextField2(
                               validator: (value) =>
                                   ipAdressValidator.validate(value),
@@ -130,7 +131,6 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
                               onValueChanged: (l) =>
                                   bloc.offsetAndSensitivity = l,
                             ),
-
                             Divider(height: 0.5),
                             Padding(
                               padding: const EdgeInsets.all(8.0),

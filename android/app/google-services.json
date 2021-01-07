@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "304812809989",
+    "firebase_url": "https://headtrack-96e5a.firebaseio.com",
+    "project_id": "headtrack-96e5a",
+    "storage_bucket": "headtrack-96e5a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:304812809989:android:5377b832a05e79eb6ba16c",
+        "android_client_info": {
+          "package_name": "com.benalitechnologies.trackai1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "304812809989-b6oj336jqehu0tgc1mthl58bo6j89mmk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUKLWFQCxT8gKR0eTCuA7g3hrgAgRVe0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "304812809989-b6oj336jqehu0tgc1mthl58bo6j89mmk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:304812809989:android:154a95673d92eb436ba16c",
+        "android_client_info": {
+          "package_name": "com.benalitechnologies.trackai2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "304812809989-b6oj336jqehu0tgc1mthl58bo6j89mmk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUKLWFQCxT8gKR0eTCuA7g3hrgAgRVe0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "304812809989-b6oj336jqehu0tgc1mthl58bo6j89mmk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

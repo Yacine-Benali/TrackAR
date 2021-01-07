@@ -1,0 +1,11 @@
+*.iml
+.gradle
+/local.properties
+/.idea/workspace.xml
+/.idea/libraries
+.DS_Store
+/build
+/captures
+.cxx/
+src/main/jniLibs
+app/src/main/java/io/flutter/plugins/GeneratedPluginRegistrant.java

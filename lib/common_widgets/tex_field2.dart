@@ -43,7 +43,7 @@ class _TextField2State extends State<TextField2> {
         child: Container(
           color: AppColors.tileColor,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: Row(
               children: [
                 Expanded(flex: 1, child: Text(widget.title)),

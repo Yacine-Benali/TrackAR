@@ -22,27 +22,17 @@ environment:
 
 dependencies:
   #ui
+  overlay_screen: ^1.2.0+1
   modal_bottom_sheet: ^1.0.0+1
   #state mangement and bloc
   #utils
   ffi: ^0.1.3
-  #excel: ^1.1.5
-  #share: ^0.6.5
-  native_device_orientation: ^0.4.3
-  tuple: ^1.0.3
   #platform acess
   shared_preferences: ^0.5.8
-  #open_file: ^3.0.1
-  #permission_handler: ^5.0.1+1
   path_provider: ^1.6.24
-  #camera: ^0.5.8+6
-  #firebase
-  #firebase_core: ^0.5.0
-  #firebase_ml_vision: ^0.9.6+2
   #opencv
   native_opencv:
    path: native_opencv
-  #ar core
   arcore_flutter_plugin:
    path: arcore_flutter_plugin
   # dead

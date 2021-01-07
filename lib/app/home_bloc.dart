@@ -5,9 +5,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:headtrack/app/home_provider.dart';
 import 'package:headtrack/constants/constants.dart';
-import 'package:headtrack/constants/size_config.dart';
-import 'package:native_device_orientation/native_device_orientation.dart';
-import 'package:tuple/tuple.dart';
 
 class HomeBloc {
   HomeBloc({
@@ -73,42 +70,5 @@ class HomeBloc {
     await provider.sendPoses(ipAddress, port, rawPoses);
 
     free(listPtr);
-  }
-
-  int getScreenOrientation(NativeDeviceOrientation screenOrientation) {
-    switch (screenOrientation) {
-      case NativeDeviceOrientation.portraitDown:
-        return 0;
-        break;
-      case NativeDeviceOrientation.landscapeRight:
-        return 3;
-        break;
-      case NativeDeviceOrientation.landscapeLeft:
-        return 1;
-        break;
-      default:
-        return 0;
-    }
-  }
-
-  Tuple2<double, double> getDimensions(
-      NativeDeviceOrientation screenOrientation) {
-    double width, height = 0;
-    switch (screenOrientation) {
-      case NativeDeviceOrientation.portraitUp:
-        width = height = double.infinity;
-        break;
-      case NativeDeviceOrientation.landscapeRight:
-        height = SizeConfig.screenHeight;
-        width = SizeConfig.screenWidth;
-        break;
-      case NativeDeviceOrientation.landscapeLeft:
-        height = SizeConfig.screenHeight;
-        width = SizeConfig.screenWidth;
-        break;
-      default:
-        width = height = double.infinity;
-    }
-    return Tuple2<double, double>(height, width);
   }
 }

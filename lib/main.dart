@@ -13,14 +13,14 @@ void main() async {
   print(await ArCoreController.checkArCoreAvailability());
   print('\nAR SERVICES INSTALLED?');
   print(await ArCoreController.checkIsArCoreInstalled());
-
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  await SystemChrome.setEnabledSystemUIOverlays([]);
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); // d
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'title go brrr',

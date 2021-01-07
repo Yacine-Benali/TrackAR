@@ -26,6 +26,8 @@ dependencies:
   modal_bottom_sheet: ^1.0.0+1
   #state mangement and bloc
   #utils
+  firebase_core: ^0.5.3
+  firebase_analytics: ^6.3.0
   #platform acess
   shared_preferences: ^0.5.8
   path_provider: ^1.6.24

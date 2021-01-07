@@ -63,6 +63,35 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:304812809989:android:eb6e34cddd71be4f6ba16c",
+        "android_client_info": {
+          "package_name": "com.benalitechnologies.trackar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "304812809989-b6oj336jqehu0tgc1mthl58bo6j89mmk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAUKLWFQCxT8gKR0eTCuA7g3hrgAgRVe0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "304812809989-b6oj336jqehu0tgc1mthl58bo6j89mmk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

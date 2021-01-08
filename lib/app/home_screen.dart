@@ -34,7 +34,6 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
   void initState() {
     provider = HomeProvider();
     bloc = HomeBloc(provider: provider);
-
     isEnabled = true;
 
     super.initState();

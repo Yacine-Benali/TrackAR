@@ -20,9 +20,12 @@ class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ArCoreFaceView(
-      enableAugmentedFaces: true,
-      onArCoreViewCreated: _onArCoreViewCreated,
+    return Container(
+      color: Colors.grey,
+      child: ArCoreFaceView(
+        enableAugmentedFaces: true,
+        onArCoreViewCreated: _onArCoreViewCreated,
+      ),
     );
   }
 

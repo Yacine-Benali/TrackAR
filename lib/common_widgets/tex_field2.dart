@@ -41,6 +41,7 @@ class _TextField2State extends State<TextField2> {
           initialValue: value,
         ).show(context),
         child: Container(
+          height: 60,
           color: AppColors.tileColor,
           child: Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
@@ -54,9 +55,13 @@ class _TextField2State extends State<TextField2> {
                 Expanded(
                   flex: 1,
                   child: FlatButton(
+                    padding: EdgeInsets.all(0),
                     child: Align(
                       alignment: Alignment.centerRight,
-                      child: Icon(Icons.edit),
+                      child: Icon(
+                        Icons.edit,
+                        size: 30,
+                      ),
                     ),
                     onPressed: () => InputDialog(
                       validator: widget.validator,

@@ -55,13 +55,18 @@ class _OffsetSliderState extends State<OffsetSlider> {
             Expanded(
               flex: 1,
               child: FlatButton(
+                padding: EdgeInsets.all(0),
                 onPressed: () => setState(() {
-                  _currentSliderValue = widget.initialValue;
+                  //! hardcoded reset value
+                  _currentSliderValue = 0;
                   widget.onValueChanged(_currentSliderValue);
                 }),
                 child: Align(
                   alignment: Alignment.centerRight,
-                  child: Icon(Icons.restore),
+                  child: Icon(
+                    Icons.restore,
+                    size: 30,
+                  ),
                 ),
               ),
             )

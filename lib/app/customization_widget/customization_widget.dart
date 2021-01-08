@@ -1,6 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:headtrack/app/home_bloc.dart';
+import 'package:headtrack/app/models/user_settings.dart';
 import 'package:headtrack/constants/app_colors.dart';
 
 import 'customization_button.dart';
@@ -9,78 +11,47 @@ class CustomizationWidget extends StatefulWidget {
   const CustomizationWidget({
     Key key,
     @required this.onValueChanged,
+    @required this.bloc,
+    @required this.userSettings,
   }) : super(key: key);
 
-  final ValueChanged<List<double>> onValueChanged;
+  final ValueChanged<UserSettings> onValueChanged;
+  final HomeBloc bloc;
+  final UserSettings userSettings;
 
   @override
   _CustomizationWidgetState createState() => _CustomizationWidgetState();
 }
 
 class _CustomizationWidgetState extends State<CustomizationWidget> {
-  double xOffset;
-  double xSensitivity;
-  //
-  double yOffset;
-  double ySensitivity;
-  //
-  double zOffset;
-  double zSensitivity;
-  //
-  double pitchOffset;
-  double pitchSensitivity;
-  //
-  double yawOffset;
-  double yawSensitivity;
-  //
-  double rollOffset;
-  double rollSensitivity;
+  UserSettings get userSettings => widget.userSettings;
+  HomeBloc get bloc => widget.bloc;
 
   void save() {
-    widget.onValueChanged([
-      xSensitivity,
-      xOffset,
-      ySensitivity,
-      yOffset,
-      zSensitivity,
-      zOffset,
-      yawSensitivity,
-      yawOffset,
-      pitchSensitivity,
-      pitchOffset,
-      rollSensitivity,
-      rollOffset,
-    ]);
+    widget.onValueChanged(userSettings);
+    setState(() {});
   }
 
   void reset() {
-    xOffset = 0;
-    xSensitivity = 1;
+    userSettings.xOffset = 0;
+    userSettings.xSensitivity = 1;
     //
-    yOffset = 0;
-    ySensitivity = 1;
+    userSettings.yOffset = 0;
+    userSettings.ySensitivity = 1;
     //
-    zOffset = 0;
-    zSensitivity = 1;
+    userSettings.zOffset = 0;
+    userSettings.zSensitivity = 1;
     //
-    yawOffset = 0;
-    yawSensitivity = 1;
+    userSettings.yawOffset = 0;
+    userSettings.yawSensitivity = 1;
     //
-    pitchOffset = 0;
-    pitchSensitivity = 1;
+    userSettings.pitchOffset = 0;
+    userSettings.pitchSensitivity = 1;
     //
-    rollOffset = 0;
-    rollSensitivity = 1;
+    userSettings.rollOffset = 0;
+    userSettings.rollSensitivity = 1;
   }
 
-  @override
-  void initState() {
-    reset();
-    save();
-    super.initState();
-  }
-
-  void showBottomSheet() {}
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -92,20 +63,30 @@ class _CustomizationWidgetState extends State<CustomizationWidget> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Sensitivity and offset',
-                  style: TextStyle(fontSize: 16),
-                ),
-                IconButton(
-                  icon: Icon(
-                    Icons.restore,
-                    size: 30,
+                Expanded(
+                  flex: 3,
+                  child: Text(
+                    'Sensitivity and offset',
+                    style: TextStyle(fontSize: 16),
                   ),
-                  onPressed: () {
-                    reset();
-                    save();
-                    setState(() {});
-                  },
+                ),
+                Expanded(
+                  flex: 1,
+                  child: FlatButton(
+                    padding: EdgeInsets.all(0),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        Icons.restore,
+                        size: 30,
+                      ),
+                    ),
+                    onPressed: () {
+                      reset();
+                      save();
+                      setState(() {});
+                    },
+                  ),
                 )
               ],
             ),
@@ -117,40 +98,47 @@ class _CustomizationWidgetState extends State<CustomizationWidget> {
               children: [
                 CustomizationButton(
                   title: 'X',
-                  sensitivity: xSensitivity,
-                  offset: xOffset,
+                  sensitivity: userSettings.xSensitivity,
+                  offset: userSettings.xOffset,
                   onSensitivityChanged: (double value) {
-                    xSensitivity = value;
+                    userSettings.xSensitivity = value;
+                    bloc.setValue('xSensitivity', userSettings.xSensitivity);
                     save();
                   },
                   onOffsetChanged: (double value) {
-                    xOffset = value;
+                    userSettings.xOffset = value;
+                    bloc.setValue('xOffset', userSettings.xOffset);
                     save();
                   },
                 ),
                 CustomizationButton(
                   title: 'Y',
-                  sensitivity: ySensitivity,
-                  offset: yOffset,
+                  sensitivity: userSettings.ySensitivity,
+                  offset: userSettings.yOffset,
                   onSensitivityChanged: (double value) {
-                    ySensitivity = value;
+                    userSettings.ySensitivity = value;
+                    bloc.setValue('ySensitivity', userSettings.ySensitivity);
+
                     save();
                   },
                   onOffsetChanged: (double value) {
-                    yOffset = value;
+                    userSettings.yOffset = value;
+                    bloc.setValue('yOffset', userSettings.yOffset);
                     save();
                   },
                 ),
                 CustomizationButton(
                   title: 'Z',
-                  sensitivity: zSensitivity,
-                  offset: zOffset,
+                  sensitivity: userSettings.zSensitivity,
+                  offset: userSettings.zOffset,
                   onSensitivityChanged: (double value) {
-                    zSensitivity = value;
+                    userSettings.zSensitivity = value;
+                    bloc.setValue('zSensitivity', userSettings.zSensitivity);
                     save();
                   },
                   onOffsetChanged: (double value) {
-                    zOffset = value;
+                    userSettings.zOffset = value;
+                    bloc.setValue('zOffset', userSettings.zOffset);
                     save();
                   },
                 ),
@@ -164,40 +152,49 @@ class _CustomizationWidgetState extends State<CustomizationWidget> {
               children: [
                 CustomizationButton(
                   title: 'Pitch',
-                  sensitivity: pitchSensitivity,
-                  offset: pitchOffset,
+                  sensitivity: userSettings.pitchSensitivity,
+                  offset: userSettings.pitchOffset,
                   onSensitivityChanged: (double value) {
-                    pitchSensitivity = value;
+                    userSettings.pitchSensitivity = value;
+                    bloc.setValue(
+                        'pitchSensitivity', userSettings.pitchSensitivity);
                     save();
                   },
                   onOffsetChanged: (double value) {
-                    pitchOffset = value;
+                    userSettings.pitchOffset = value;
+                    bloc.setValue('pitchOffset', userSettings.pitchOffset);
                     save();
                   },
                 ),
                 CustomizationButton(
                   title: 'Yaw',
-                  sensitivity: yawSensitivity,
-                  offset: yawOffset,
+                  sensitivity: userSettings.yawSensitivity,
+                  offset: userSettings.yawOffset,
                   onSensitivityChanged: (double value) {
-                    yawSensitivity = value;
+                    userSettings.yawSensitivity = value;
+                    bloc.setValue(
+                        'yawSensitivity', userSettings.yawSensitivity);
                     save();
                   },
                   onOffsetChanged: (double value) {
-                    yawOffset = value;
+                    userSettings.yawOffset = value;
+                    bloc.setValue('yawOffset', userSettings.yawOffset);
                     save();
                   },
                 ),
                 CustomizationButton(
                   title: 'Roll',
-                  sensitivity: rollSensitivity,
-                  offset: rollOffset,
+                  sensitivity: userSettings.rollSensitivity,
+                  offset: userSettings.rollOffset,
                   onSensitivityChanged: (double value) {
-                    rollSensitivity = value;
+                    userSettings.rollSensitivity = value;
+                    bloc.setValue(
+                        'rollSensitivity', userSettings.rollSensitivity);
                     save();
                   },
                   onOffsetChanged: (double value) {
-                    rollOffset = value;
+                    userSettings.rollOffset = value;
+                    bloc.setValue('rollOffset', userSettings.rollOffset);
                     save();
                   },
                 ),

@@ -35,6 +35,8 @@ class _CustomizationButtonState extends State<CustomizationButton> {
         style: TextStyle(fontSize: 25),
       ),
       onPressed: () async {
+        // print('rebuilt with ${widget.sensitivity} ${widget.offset}');
+
         await showMaterialModalBottomSheet(
           context: context,
           builder: (context) => Column(
@@ -43,7 +45,10 @@ class _CustomizationButtonState extends State<CustomizationButton> {
               SentivitySlider(
                 initialValue: widget.sensitivity,
                 title: 'Sensitivity',
-                onValueChanged: (value) => widget.onSensitivityChanged(value),
+                onValueChanged: (value) {
+                  print(value);
+                  widget.onSensitivityChanged(value);
+                },
               ),
               Divider(height: 0.5),
               OffsetSlider(

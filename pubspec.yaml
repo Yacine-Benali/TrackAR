@@ -31,6 +31,8 @@ dependencies:
   #platform acess
   shared_preferences: ^0.5.8
   path_provider: ^1.6.24
+  wakelock: ^0.2.1+1
+
   arcore_flutter_plugin:
    path: arcore_flutter_plugin
   # dead

@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:headtrack/app/home_screen.dart';
+import 'package:wakelock/wakelock.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -10,6 +11,7 @@ void main() async {
   print(await ArCoreController.checkArCoreAvailability());
   print('\nAR SERVICES INSTALLED?');
   print(await ArCoreController.checkIsArCoreInstalled());
+  Wakelock.enable();
   await Firebase.initializeApp();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await SystemChrome.setEnabledSystemUIOverlays([]);
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'title go brrr',
+      title: 'TrackAR',
       theme: ThemeData(
         primarySwatch: Colors.pink,
         brightness: Brightness.dark,

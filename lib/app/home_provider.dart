@@ -11,19 +11,25 @@ class HomeProvider {
     return prefs.getString(key);
   }
 
-  void setString(String key, String value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString(key, value);
-  }
-
   Future<int> getInt(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getInt(key);
   }
 
-  void setInt(String key, int value) async {
+  Future<double> getDouble(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setInt(key, value);
+    return prefs.getDouble(key);
+  }
+
+  void setValue(String key, dynamic value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (value is int) {
+      await prefs.setInt(key, value);
+    } else if (value is String) {
+      await prefs.setString(key, value);
+    } else if (value is double) {
+      await prefs.setDouble(key, value);
+    }
   }
 
   Future<void> sendPoses(

@@ -2,6 +2,15 @@
   <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
   <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
   <uses-permission android:name="android.permission.INTERNET"/>
+  <uses-permission android:name="android.permission.CAMERA" />
+
+<!-- "AR Required" apps must declare minSdkVersion ≥ 24 -->
+<uses-sdk android:minSdkVersion="24" />
+
+<!-- Indicates that app requires ARCore ("AR Required"). Ensures app is only
+     visible in the Google Play Store on devices that support ARCore.
+-->
+<uses-feature android:name="android.hardware.camera.ar" />
 
   <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -9,6 +18,11 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
   <application android:name="io.flutter.app.FlutterApplication" android:label="TrackAR" android:icon="@mipmap/launcher_icon">
+
+    <!-- Indicates that app requires ARCore ("AR Required"). Causes Google
+         Play Store to download and install ARCore when the app is installed.
+    -->
+    <meta-data android:name="com.google.ar.core" android:value="required" />
 
     <activity android:name=".MainActivity" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
       <!-- Specifies an Android theme to apply to this Activity as soon as

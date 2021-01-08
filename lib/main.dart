@@ -18,6 +18,7 @@ void main() async {
   await Firebase.initializeApp();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await SystemChrome.setEnabledSystemUIOverlays([]);
+  FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   if (kDebugMode) {
     // Future.delayed(Duration(seconds: 2), () {
     //   FirebaseCrashlytics.instance.crash();

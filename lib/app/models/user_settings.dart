@@ -36,11 +36,7 @@ class UserSettings {
   @override
   String toString() {
     print("""
-     --------------------------------------------------------
-    $ipAddress $port
-    $xSensitivity $xOffset 
-    $ySensitivity $yOffset 
-    $zSensitivity $zOffset 
+     -------------------------------------------------------- 
     $pitchSensitivity $pitchOffset 
     $yawSensitivity $yawOffset 
     $rollSensitivity $rollOffset 

@@ -46,7 +46,7 @@ class _CustomizationButtonState extends State<CustomizationButton> {
                 initialValue: widget.sensitivity,
                 title: 'Sensitivity',
                 onValueChanged: (value) {
-                  print(value);
+                  // print(value);
                   widget.onSensitivityChanged(value);
                 },
               ),

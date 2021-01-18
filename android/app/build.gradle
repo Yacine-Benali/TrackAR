@@ -54,7 +54,7 @@ android {
     defaultConfig {
         applicationId "com.benalitechnologies.trackar"
         minSdkVersion 24
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }

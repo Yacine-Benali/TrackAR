@@ -100,15 +100,15 @@ class HomeBloc {
     List<double> q = [l[6], l[3], l[4], l[5]]; // {qw, qx, qy, qz}.
 
     final listPtr = intListToArray(q);
-
+    //print(userSettings);
     final arr = q2c(q);
     //userSettings.toString();
     List<double> rawPoses = [
       l[0] * 100, // x
       l[1] * 100, //  y
       -l[2] * 100, //   z
-      -arr[1], // pitch
-      -arr[0], // yaw
+      -arr[1], // yaw
+      -arr[0], // pitch
       -arr[2], //   roll
     ];
     rawPoses[0] =
@@ -118,10 +118,12 @@ class HomeBloc {
     rawPoses[2] =
         (rawPoses[2] * userSettings.zSensitivity) + userSettings.zOffset;
 
-    rawPoses[3] = (rawPoses[3] * userSettings.pitchSensitivity) +
+    rawPoses[3] =
+        (rawPoses[3] * userSettings.yawSensitivity) + userSettings.yawOffset;
+
+    rawPoses[4] = (rawPoses[4] * userSettings.pitchSensitivity) +
         userSettings.pitchOffset;
-    rawPoses[4] =
-        (rawPoses[4] * userSettings.yawSensitivity) + userSettings.yawOffset;
+
     rawPoses[5] =
         (rawPoses[5] * userSettings.rollSensitivity) + userSettings.rollOffset;
 

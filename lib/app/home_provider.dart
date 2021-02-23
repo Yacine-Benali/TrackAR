@@ -1,11 +1,12 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeProvider {
-  HomeProvider();
-
+  HomeProvider({@required this.socket});
+  RawDatagramSocket socket;
   Future<String> getString(String key) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(key);
@@ -38,9 +39,7 @@ class HomeProvider {
     List<double> posesList,
   ) async {
     var bytes = Float64List.fromList(posesList).buffer.asUint8List();
-    await RawDatagramSocket.bind(InternetAddress.anyIPv4, 0, reuseAddress: true)
-        .then((RawDatagramSocket socket) {
-      socket.send(bytes, InternetAddress(ipAddress), port);
-    });
+
+    return socket.send(bytes, InternetAddress(ipAddress), port);
   }
 }

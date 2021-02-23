@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:headtrack/app/face_detection/face_detection_screen.dart';
@@ -30,9 +32,12 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
 
   LocalStorageService storage = LocalStorageService();
   UserSettings userSettings;
+  Future<RawDatagramSocket> socketFuture;
   @override
   void initState() {
-    provider = HomeProvider();
+    socketFuture = RawDatagramSocket.bind(InternetAddress.anyIPv4, 0,
+        reuseAddress: true, reusePort: true);
+    provider = HomeProvider(socket: null);
     bloc = HomeBloc(provider: provider);
     isEnabled = true;
 
@@ -84,11 +89,12 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
         },
       ),
       body: SizedBox.expand(
-        child: FutureBuilder<UserSettings>(
-          future: bloc.getUserSettings(),
-          builder: (context, snapshot) {
+        child: FutureBuilder(
+          future: Future.wait([bloc.getUserSettings(), socketFuture]),
+          builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
             if (snapshot.hasData) {
-              userSettings = snapshot.data;
+              userSettings = snapshot.data[0];
+              provider.socket = snapshot.data[1];
               ipAddress = userSettings.ipAddress;
               port = userSettings.port;
               return Column(

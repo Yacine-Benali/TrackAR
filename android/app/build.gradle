@@ -80,6 +80,8 @@ android {
         implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.8.0'
         implementation 'com.google.ar.sceneform:core:1.8.0'
         implementation 'com.google.ar:core:1.8.0'
+        // fb ads
+        implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
     }
 }
 
@@ -89,4 +91,5 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    
 }

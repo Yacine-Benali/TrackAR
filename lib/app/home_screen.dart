@@ -35,8 +35,8 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
   Future<RawDatagramSocket> socketFuture;
   @override
   void initState() {
-    socketFuture = RawDatagramSocket.bind(InternetAddress.anyIPv4, 0,
-        reuseAddress: true, reusePort: true);
+    socketFuture =
+        RawDatagramSocket.bind(InternetAddress.anyIPv4, 0, reuseAddress: true);
     provider = HomeProvider(socket: null);
     bloc = HomeBloc(provider: provider);
     isEnabled = true;

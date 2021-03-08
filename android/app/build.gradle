@@ -77,11 +77,12 @@ android {
     }
     dependencies {
         // ar coore
-        implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.8.0'
+        //implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.8.0'
         implementation 'com.google.ar.sceneform:core:1.8.0'
         implementation 'com.google.ar:core:1.8.0'
         // fb ads
         implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+        //
     }
 }
 

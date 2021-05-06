@@ -1,5 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:headtrack/constants/app_colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class InstructionScreen extends StatefulWidget {
   @override
@@ -23,6 +27,7 @@ class _InstructionScreenState extends State<InstructionScreen> {
           type: MaterialType.transparency,
           child: SingleChildScrollView(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RichText(
                   text: TextSpan(
@@ -91,8 +96,24 @@ class _InstructionScreenState extends State<InstructionScreen> {
                       TextSpan(
                         text: """\n\n""",
                       ),
+                      TextSpan(
+                        text:
+                            '\n\nTo use TrackAR over USB please follow the instructions in this link:\n',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ],
                   ),
+                ),
+                Linkify(
+                  onOpen: (link) async {
+                    if (await canLaunch(link.url)) {
+                      await launch(link.url);
+                    } else {
+                      throw 'Could not launch $link';
+                    }
+                  },
+                  text: "https://trackar.page.link/usb_mode",
+                  style: style,
                 ),
               ],
             ),

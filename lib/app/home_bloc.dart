@@ -1,7 +1,6 @@
 import 'dart:ffi';
 import 'dart:math' as math;
 
-import 'package:ffi/ffi.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:headtrack/app/home_provider.dart';
@@ -42,11 +41,11 @@ class HomeBloc {
   }
 
   Pointer<Float> intListToArray(List<double> list) {
-    final ptr = allocate<Float>(count: list.length);
-    for (var i = 0; i < list.length; i++) {
-      ptr.elementAt(i).value = list[i];
-    }
-    return ptr;
+    // final ptr = allocate<Float>(count: list.length);
+    // for (var i = 0; i < list.length; i++) {
+    //   ptr.elementAt(i).value = list[i];
+    // }
+    // return ptr;
   }
 
   List<double> q2c(List<double> q) {
@@ -99,7 +98,7 @@ class HomeBloc {
   ) async {
     List<double> q = [l[6], l[3], l[4], l[5]]; // {qw, qx, qy, qz}.
 
-    final listPtr = intListToArray(q);
+    //final listPtr = intListToArray(q);
     //print(userSettings);
     final arr = q2c(q);
     //userSettings.toString();
@@ -133,6 +132,6 @@ class HomeBloc {
       rawPoses,
     );
 
-    free(listPtr);
+    //free(listPtr);
   }
 }

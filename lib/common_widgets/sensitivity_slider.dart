@@ -34,11 +34,12 @@ class _SentivitySliderState extends State<SentivitySlider> {
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: Row(
           children: [
-            Expanded(flex: 1, child: Text(widget.title)),
+            Expanded(child: Text(widget.title)),
             Expanded(
               flex: 2,
               child: Slider(
                 value: _currentSliderValue,
+                // ignore: avoid_redundant_argument_values
                 min: 0,
                 max: 5,
                 divisions: 20,
@@ -53,9 +54,7 @@ class _SentivitySliderState extends State<SentivitySlider> {
               ),
             ),
             Expanded(
-              flex: 1,
-              child: FlatButton(
-                padding: EdgeInsets.all(0),
+              child: TextButton(
                 onPressed: () => setState(() {
                   //! hardcoded reset value
                   _currentSliderValue = 1;

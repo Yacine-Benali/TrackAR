@@ -71,9 +71,12 @@ class _CustomizationWidgetState extends State<CustomizationWidget> {
                   ),
                 ),
                 Expanded(
-                  flex: 1,
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
+                  child: TextButton(
+                    onPressed: () {
+                      reset();
+                      save();
+                      setState(() {});
+                    },
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: Icon(
@@ -81,11 +84,6 @@ class _CustomizationWidgetState extends State<CustomizationWidget> {
                         size: 30,
                       ),
                     ),
-                    onPressed: () {
-                      reset();
-                      save();
-                      setState(() {});
-                    },
                   ),
                 )
               ],

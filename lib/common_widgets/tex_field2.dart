@@ -3,7 +3,7 @@ import 'package:headtrack/common_widgets/input_dialog.dart';
 import 'package:headtrack/constants/app_colors.dart';
 
 class TextField2 extends StatefulWidget {
-  TextField2({
+  const TextField2({
     Key key,
     @required this.onValueChanged,
     @required this.title,
@@ -47,22 +47,13 @@ class _TextField2State extends State<TextField2> {
             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: Row(
               children: [
-                Expanded(flex: 1, child: Text(widget.title)),
+                Expanded(child: Text(widget.title)),
                 Expanded(
                   flex: 2,
                   child: Center(child: Text(value)),
                 ),
                 Expanded(
-                  flex: 1,
-                  child: FlatButton(
-                    padding: EdgeInsets.all(0),
-                    child: Align(
-                      alignment: Alignment.centerRight,
-                      child: Icon(
-                        Icons.edit,
-                        size: 30,
-                      ),
-                    ),
+                  child: TextButton(
                     onPressed: () => InputDialog(
                       validator: widget.validator,
                       onValueChanged: (String newValue) {
@@ -73,6 +64,13 @@ class _TextField2State extends State<TextField2> {
                       title: widget.title,
                       initialValue: value,
                     ).show(context),
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(
+                        Icons.edit,
+                        size: 30,
+                      ),
+                    ),
                   ),
                 ),
               ],

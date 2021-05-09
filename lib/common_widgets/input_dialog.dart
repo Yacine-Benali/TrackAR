@@ -15,7 +15,7 @@ class InputDialog extends StatelessWidget {
   final String Function(String) validator;
   final _formKey = GlobalKey<FormState>();
   Future<bool> show(BuildContext context) async {
-    return await showDialog<bool>(
+    return showDialog<bool>(
       context: context,
       barrierDismissible: true,
       builder: (context) => this,
@@ -36,20 +36,18 @@ class InputDialog extends StatelessWidget {
         ),
       ),
       actions: <Widget>[
-        FlatButton(
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
           child: Text('CANCEL'),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
         ),
-        FlatButton(
-          child: Text('Ok'),
+        TextButton(
           onPressed: () {
             if (_formKey.currentState.validate()) {
               _formKey.currentState.save();
               Navigator.of(context).pop();
             }
           },
+          child: Text('Ok'),
         ),
       ],
     );

@@ -35,7 +35,7 @@ class UserSettings {
 
   @override
   String toString() {
-    print("""
+    debugPrint("""
      -------------------------------------------------------- 
     $pitchSensitivity $pitchOffset 
     $yawSensitivity $yawOffset 

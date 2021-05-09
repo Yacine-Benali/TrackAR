@@ -8,11 +8,11 @@ class LocalStorageService {
   SharedPreferences perfs;
   Future<Directory> getLocalPath() async {
     if (Platform.isAndroid) {
-      return await getExternalStorageDirectory();
+      return getExternalStorageDirectory();
     }
 
     // iOS directory visible to user
-    return await getApplicationDocumentsDirectory();
+    return getApplicationDocumentsDirectory();
   }
 
   Future<File> getLocalFile(String fileName) async {
@@ -22,11 +22,11 @@ class LocalStorageService {
 
   Future<File> writeData(String data, String fileName) async {
     final file = await getLocalFile(fileName);
-    return file.writeAsString("$data");
+    return file.writeAsString(data);
   }
 
   Future<bool> addValue(MapEntry<String, String> map) async {
-    return await perfs.setString(map.key, map.value);
+    return perfs.setString(map.key, map.value);
   }
 
   String getValue(String key) {

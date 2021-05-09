@@ -25,7 +25,7 @@ class PlatformAlertDialog extends PlatformWidget {
         //         builder: (context) => this,
         //       )
         //     :
-        await showDialog<bool>(
+        showDialog<bool>(
       context: context,
       barrierDismissible: false,
       builder: (context) => this,
@@ -55,15 +55,15 @@ class PlatformAlertDialog extends PlatformWidget {
     if (cancelActionText != null) {
       actions.add(
         PlatformAlertDialogAction(
-          child: Text(cancelActionText),
           onPressed: () => Navigator.of(context).pop(false),
+          child: Text(cancelActionText),
         ),
       );
     }
     actions.add(
       PlatformAlertDialogAction(
-        child: Text(defaultActionText),
         onPressed: () => Navigator.of(context).pop(true),
+        child: Text(defaultActionText),
       ),
     );
     return actions;
@@ -78,16 +78,16 @@ class PlatformAlertDialogAction extends PlatformWidget {
   @override
   Widget buildCupertinoWidget(BuildContext context) {
     return CupertinoDialogAction(
-      child: child,
       onPressed: onPressed,
+      child: child,
     );
   }
 
   @override
   Widget buildMaterialWidget(BuildContext context) {
-    return FlatButton(
-      child: child,
+    return TextButton(
       onPressed: onPressed,
+      child: child,
     );
   }
 }

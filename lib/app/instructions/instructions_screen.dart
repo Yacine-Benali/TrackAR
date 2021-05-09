@@ -43,7 +43,7 @@ class _InstructionScreenState extends State<InstructionScreen> {
                       ),
                       TextSpan(
                         text:
-                            """\n\n2.Press the Windows key -> type "Firewall" -> "Firewall & Network Protection" -> "Advanced Settings" -> Inbound Rules -> New Rule... -> Program -> Program Path to opentrack.exe (probably "c:\program files (x86)\opentrack\opentrack.exe")""",
+                            """\n\n2.Press the Windows key -> type "Firewall" -> "Firewall & Network Protection" -> "Advanced Settings" -> Inbound Rules -> New Rule... -> Program -> Program Path to opentrack.exe (probably "c:\\program files (x86)\\opentrack\\opentrack.exe")""",
                       ),
                       TextSpan(
                         text:

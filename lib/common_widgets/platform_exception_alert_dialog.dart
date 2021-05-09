@@ -20,7 +20,7 @@ class PlatformExceptionAlertDialog extends PlatformAlertDialog {
     return _errors[exception.code] ?? exception.message;
   }
 
-  static Map<String, String> _errors = {
+  static final Map<String, String> _errors = {
     ///   • `ERROR_WEAK_PASSWORD` - If the password is not strong enough.
     ///   • `ERROR_INVALID_CREDENTIAL` - If the email address is malformed.
     'ERROR_EMAIL_ALREADY_IN_USE': 'هذا الاسم مستخدم، اختر اسماً آخر',

@@ -1,0 +1,12 @@
+include: package:lint/analysis_options.yaml
+
+analyzer:
+  exclude: [build/**,local_packages/**,
+  #lib/app/home/plot_report/folder_picker/multiselect_formfield.dart
+  ]
+
+linter:
+  rules:
+    prefer_const_constructors: false
+    prefer_final_locals: false
+    avoid_classes_with_only_static_members: false

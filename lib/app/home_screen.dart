@@ -13,6 +13,7 @@ import 'package:headtrack/common_widgets/validator.dart';
 import 'package:headtrack/constants/app_colors.dart';
 import 'package:headtrack/constants/size_config.dart';
 import 'package:headtrack/services/local_storage_service.dart';
+import 'package:native_device_orientation/native_device_orientation.dart';
 import 'package:overlay_screen/overlay_screen.dart';
 
 import 'customization_widget/customization_widget.dart';
@@ -29,10 +30,10 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
   int port;
   bool isEnabled;
   List<double> offsetsAndSensitivity;
-
   LocalStorageService storage = LocalStorageService();
   UserSettings userSettings;
   Future<RawDatagramSocket> socketFuture;
+
   @override
   void initState() {
     socketFuture =
@@ -40,14 +41,6 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
     provider = HomeProvider(socket: null);
     bloc = HomeBloc(provider: provider);
     isEnabled = true;
-
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    SizeConfig.init(context);
-
     OverlayScreen().saveScreens({
       'custom2': CustomOverlayScreen(
           backgroundColor: Colors.yellow[400],
@@ -55,16 +48,23 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
             backgroundColor: Colors.black,
             floatingActionButton: FloatingActionButton(
               backgroundColor: Colors.black,
+              onPressed: () async {
+                OverlayScreen().pop();
+              },
               child: Icon(
                 Icons.lightbulb,
                 color: Colors.black,
               ),
-              onPressed: () async {
-                OverlayScreen().pop();
-              },
             ),
           )),
     });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig.init(context);
+
     return Scaffold(
       extendBody: true,
       backgroundColor: AppColors.backgroundColor,
@@ -76,126 +76,140 @@ class _HomeSceenState extends State<HomeSceen> with IpAddressAndPortValidator {
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.primaryColor,
+        onPressed: () => OverlayScreen().show(
+          context,
+          identifier: 'custom2',
+        ),
         child: Icon(
           Icons.lightbulb,
           color: Colors.black,
           size: 30,
         ),
-        onPressed: () async {
-          OverlayScreen().show(
-            context,
-            identifier: 'custom2',
-          );
-        },
       ),
       body: SizedBox.expand(
-        child: FutureBuilder(
+        child: FutureBuilder<List<dynamic>>(
           future: Future.wait([bloc.getUserSettings(), socketFuture]),
           builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
             if (snapshot.hasData) {
-              userSettings = snapshot.data[0];
-              provider.socket = snapshot.data[1];
+              userSettings = snapshot.data[0] as UserSettings;
+              provider.socket = snapshot.data[1] as RawDatagramSocket;
               ipAddress = userSettings.ipAddress;
               port = userSettings.port;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: SizedBox(
-                        width: SizeConfig.blockSizeVertical * 30,
-                        height: SizeConfig.blockSizeVertical * 30,
-                        child: FaceDetectionScreen(
-                          onFaceDetected: (List<double> values) {
-                            if (isEnabled) bloc.sendFace(userSettings, values);
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 5),
-                          TextField2(
-                            validator: (value) =>
-                                ipAdressValidator.validate(value),
-                            onValueChanged: (value) {
-                              ipAddress = value;
-                              bloc.setValue('ipAddress', value);
-                            },
-                            title: 'IP Address',
-                            initialValue: ipAddress,
-                          ),
-                          Divider(height: 0.5),
-                          TextField2(
-                            validator: (value) => portValidator.validate(value),
-                            onValueChanged: (value) {
-                              port = int.parse(value);
-                              bloc.setValue('port', port);
-                            },
-                            title: 'Port',
-                            initialValue: port.toString(),
-                          ),
-                          Divider(height: 0.5),
-                          CustomizationWidget(
-                            userSettings: userSettings,
-                            onValueChanged: (newuserSettings) =>
-                                userSettings = newuserSettings,
-                            bloc: bloc,
-                          ),
-                          Divider(height: 0.5),
-                          Container(
-                            color: AppColors.tileColor,
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: SwitchListTile(
-                                contentPadding: const EdgeInsets.all(0.0),
-                                title: const Text('enabled'),
-                                value: isEnabled,
-                                activeColor: AppColors.primaryColor,
-                                onChanged: (bool value) async {
-                                  setState(() {
-                                    isEnabled = value;
-                                  });
+              return StreamBuilder<NativeDeviceOrientation>(
+                  stream: NativeDeviceOrientationCommunicator()
+                      .onOrientationChanged(useSensor: true),
+                  builder: (context, ortientation) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Center(
+                            child: SizedBox(
+                              width: SizeConfig.blockSizeVertical * 30,
+                              height: SizeConfig.blockSizeVertical * 30,
+                              child: FaceDetectionScreen(
+                                onFaceDetected: (List<double> values) {
+                                  if (isEnabled && ortientation.data != null) {
+                                    bloc.sendFace(
+                                      userSettings,
+                                      values,
+                                      ortientation.data,
+                                    );
+                                  }
                                 },
                               ),
                             ),
                           ),
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: RaisedButton(
-                              color: AppColors.primaryColor,
-                              onPressed: () async => await Navigator.of(context,
-                                      rootNavigator: false)
-                                  .push(
-                                MaterialPageRoute(
-                                  builder: (context) => InstructionScreen(),
-                                  fullscreenDialog: true,
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 5),
+                                TextField2(
+                                  validator: (value) =>
+                                      ipAdressValidator.validate(value),
+                                  onValueChanged: (value) {
+                                    ipAddress = value;
+                                    bloc.setValue('ipAddress', value);
+                                  },
+                                  title: 'IP Address',
+                                  initialValue: ipAddress,
                                 ),
-                              ),
-                              child: const Text(
-                                'Instructions',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.black,
+                                Divider(height: 0.5),
+                                TextField2(
+                                  validator: (value) =>
+                                      portValidator.validate(value),
+                                  onValueChanged: (value) {
+                                    port = int.parse(value);
+                                    bloc.setValue('port', port);
+                                  },
+                                  title: 'Port',
+                                  initialValue: port.toString(),
                                 ),
-                              ),
+                                Divider(height: 0.5),
+                                CustomizationWidget(
+                                  userSettings: userSettings,
+                                  onValueChanged: (newuserSettings) =>
+                                      userSettings = newuserSettings,
+                                  bloc: bloc,
+                                ),
+                                Divider(height: 0.5),
+                                Container(
+                                  color: AppColors.tileColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: SwitchListTile(
+                                      contentPadding: const EdgeInsets.all(0.0),
+                                      title: const Text('enabled'),
+                                      value: isEnabled,
+                                      activeColor: AppColors.primaryColor,
+                                      onChanged: (bool value) async {
+                                        setState(() {
+                                          isEnabled = value;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      onPrimary: Colors.black87,
+                                      primary: AppColors.primaryColor,
+                                    ),
+                                    onPressed: () async => Navigator.of(context,
+                                            rootNavigator: false)
+                                        .push(
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            InstructionScreen(),
+                                        fullscreenDialog: true,
+                                      ),
+                                    ),
+                                    child: const Text(
+                                      'Instructions',
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        color: Colors.black,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              );
+                        ),
+                      ],
+                    );
+                  });
             } else if (snapshot.hasError) {
               return EmptyContent(
                 title: 'Something went wrong',
-                message: 'Can\'t load items right now',
+                message: "Can't load items right now",
               );
             }
             return Center(

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class FaceDetectionScreen extends StatefulWidget {
-  FaceDetectionScreen({Key key, @required this.onFaceDetected})
+  const FaceDetectionScreen({Key key, @required this.onFaceDetected})
       : super(key: key);
   final ValueChanged<List<double>> onFaceDetected;
   @override
@@ -12,7 +12,8 @@ class FaceDetectionScreen extends StatefulWidget {
 
 class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
   ArCoreFaceController arCoreFaceController;
-  var _channel = EventChannel('events');
+  final EventChannel _channel = EventChannel('events');
+  List<double> newStrealValue = [0, 0, 0, 0, 0, 0];
   @override
   void initState() {
     super.initState();
@@ -33,24 +34,25 @@ class _FaceDetectionScreenState extends State<FaceDetectionScreen> {
     arCoreFaceController = controller;
     _channel.receiveBroadcastStream().listen(
       (value) {
-        List<double> l = [
-          value[0],
-          value[1],
-          value[2],
-          value[3],
-          value[4],
-          value[5],
-          value[6],
+        newStrealValue = [
+          value[0] as double,
+          value[1] as double,
+          value[2] as double,
+          value[3] as double,
+          value[4] as double,
+          value[5] as double,
+          value[6] as double,
         ];
 
-        widget.onFaceDetected(l);
+        setState(() {});
+        widget.onFaceDetected(newStrealValue);
       },
       cancelOnError: true,
     );
     loadMesh();
   }
 
-  loadMesh() async {
+  Future<void> loadMesh() async {
     final ByteData textureBytes = await rootBundle.load('assets/empty.png');
     arCoreFaceController.loadMesh(
       textureBytes: textureBytes.buffer.asUint8List(),

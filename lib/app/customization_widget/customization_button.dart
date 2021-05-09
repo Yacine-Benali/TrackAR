@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:headtrack/common_widgets/offsetSlider.dart';
+import 'package:headtrack/common_widgets/offset_slider.dart';
 import 'package:headtrack/common_widgets/sensitivity_slider.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
@@ -28,12 +28,7 @@ class CustomizationButton extends StatefulWidget {
 class _CustomizationButtonState extends State<CustomizationButton> {
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.all(0.0),
-      child: Text(
-        widget.title,
-        style: TextStyle(fontSize: 25),
-      ),
+    return TextButton(
       onPressed: () async {
         // print('rebuilt with ${widget.sensitivity} ${widget.offset}');
 
@@ -60,6 +55,10 @@ class _CustomizationButtonState extends State<CustomizationButton> {
           ),
         );
       },
+      child: Text(
+        widget.title,
+        style: TextStyle(fontSize: 25, color: Colors.white),
+      ),
     );
   }
 }

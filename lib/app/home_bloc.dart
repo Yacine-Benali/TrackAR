@@ -1,10 +1,12 @@
-import 'dart:ffi';
 import 'dart:math' as math;
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:headtrack/app/home_provider.dart';
 import 'package:headtrack/app/models/user_settings.dart';
+import 'package:native_device_orientation/native_device_orientation.dart';
+import 'package:vector_math/vector_math.dart' as vector_math;
+import 'package:vector_math/vector_math.dart';
 
 class HomeBloc {
   HomeBloc({
@@ -12,7 +14,7 @@ class HomeBloc {
   });
   final HomeProvider provider;
 
-  void setValue(String key, dynamic value) async =>
+  Future<void> setValue(String key, dynamic value) async =>
       provider.setValue(key, value);
 
   Future<UserSettings> getUserSettings() async {
@@ -40,21 +42,13 @@ class HomeBloc {
     );
   }
 
-  Pointer<Float> intListToArray(List<double> list) {
-    // final ptr = allocate<Float>(count: list.length);
-    // for (var i = 0; i < list.length; i++) {
-    //   ptr.elementAt(i).value = list[i];
-    // }
-    // return ptr;
-  }
-
   List<double> q2c(List<double> q) {
     var w = q[0];
     var x = q[1];
     var y = q[2];
     var z = q[3];
 
-    var ret = List<double>(3);
+    var ret = List<double>.filled(3, 0);
 
     var test = x * y + z * w;
     if (test > 0.4999) {
@@ -92,24 +86,89 @@ class HomeBloc {
     return q;
   }
 
-  void sendFace(
+  List<double> correctForOrientation(
+    List<double> rawPoses,
+    NativeDeviceOrientation orientation,
+  ) {
+    // according to the paper I sent to you, this is landscape left.  make if statements to choose theta according to mobile orientation.
+    double theta;
+    switch (orientation) {
+      case NativeDeviceOrientation.landscapeRight:
+        theta = math.pi / 2;
+        break;
+      case NativeDeviceOrientation.landscapeLeft:
+        theta = -(math.pi / 2);
+        break;
+      case NativeDeviceOrientation.portraitDown:
+        theta = math.pi;
+        break;
+      default:
+        // default is portrait up
+        theta = 0;
+    }
+    // Rotation matrix for any point in 3d space we will be using for the translation
+    Matrix3 T = Matrix3.rotationZ(theta);
+    // rotation matrix for quaternion
+    Quaternion Q = Quaternion.fromRotation(T);
+
+    // put the point you want to transform here
+    Vector3 measuredPosition =
+        vector_math.Vector3(rawPoses[0], rawPoses[1], rawPoses[2]);
+
+    // input quaternion.
+    Quaternion measuredQuat = Quaternion(rawPoses[3], rawPoses[4], rawPoses[5],
+        rawPoses[6]); // Please note the order: x,y,z,w
+    // Transform position by T.
+    Vector3 actualPosition = T.transform(measuredPosition);
+    // Transform quaternion by Q.
+    Quaternion actualQuat = Q * measuredQuat;
+
+    return [
+      actualPosition.x,
+      actualPosition.y,
+      actualPosition.z,
+      actualQuat.x,
+      actualQuat.y,
+      actualQuat.z,
+      actualQuat.w
+    ];
+  }
+
+  Future<void> sendFace(
     UserSettings userSettings,
     List<double> l,
+    NativeDeviceOrientation orientation,
   ) async {
-    List<double> q = [l[6], l[3], l[4], l[5]]; // {qw, qx, qy, qz}.
-
-    //final listPtr = intListToArray(q);
-    //print(userSettings);
-    final arr = q2c(q);
-    //userSettings.toString();
-    List<double> rawPoses = [
-      l[0] * 100, // x
-      l[1] * 100, //  y
-      -l[2] * 100, //   z
-      -arr[1], // yaw
-      -arr[0], // pitch
-      -arr[2], //   roll
+    List<double> posesCorrected = correctForOrientation(l, orientation);
+    // transform the quanternion to degrees
+    // {qw, qx, qy, qz}.
+    List<double> quanternionsList = [
+      posesCorrected[6],
+      posesCorrected[3],
+      posesCorrected[4],
+      posesCorrected[5]
     ];
+    List<double> euluerDegrees = q2c(quanternionsList);
+    List<double> finalPosition = [
+      posesCorrected[0] * 100, // x
+      posesCorrected[1] * 100, //  y
+      -posesCorrected[2] * 100, //   z
+      -euluerDegrees[1], // yaw
+      -euluerDegrees[0], // pitch
+      -euluerDegrees[2], //   roll
+    ];
+
+    finalPosition = applyUserSettings(finalPosition, userSettings);
+
+    await provider.sendPoses(
+      userSettings.ipAddress,
+      userSettings.port,
+      finalPosition,
+    );
+  }
+
+  List<double> applyUserSettings(
+      List<double> rawPoses, UserSettings userSettings) {
     rawPoses[0] =
         (rawPoses[0] * userSettings.xSensitivity) + userSettings.xOffset;
     rawPoses[1] =
@@ -126,12 +185,6 @@ class HomeBloc {
     rawPoses[5] =
         (rawPoses[5] * userSettings.rollSensitivity) + userSettings.rollOffset;
 
-    await provider.sendPoses(
-      userSettings.ipAddress,
-      userSettings.port,
-      rawPoses,
-    );
-
-    //free(listPtr);
+    return rawPoses;
   }
 }

@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:headtrack/app/home_screen.dart';
 import 'package:wakelock/wakelock.dart';
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   //print('ARCORE IS AVAILABLE?');
   // print(await ArCoreController.checkArCoreAvailability());
@@ -18,10 +18,8 @@ void main() async {
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await SystemChrome.setEnabledSystemUIOverlays([]);
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
+
   if (kDebugMode) {
-    // Future.delayed(Duration(seconds: 2), () {
-    //   FirebaseCrashlytics.instance.crash();
-    // });
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   }
   runApp(MyApp());

@@ -22,7 +22,7 @@ class HomeProvider {
     return prefs.getDouble(key);
   }
 
-  void setValue(String key, dynamic value) async {
+  Future<void> setValue(String key, dynamic value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (value is int) {
       await prefs.setInt(key, value);

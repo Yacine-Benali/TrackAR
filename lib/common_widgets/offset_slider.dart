@@ -34,7 +34,7 @@ class _OffsetSliderState extends State<OffsetSlider> {
         padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: Row(
           children: [
-            Expanded(flex: 1, child: Text(widget.title)),
+            Expanded(child: Text(widget.title)),
             Expanded(
               flex: 2,
               child: Slider(
@@ -53,9 +53,7 @@ class _OffsetSliderState extends State<OffsetSlider> {
               ),
             ),
             Expanded(
-              flex: 1,
-              child: FlatButton(
-                padding: EdgeInsets.all(0),
+              child: TextButton(
                 onPressed: () => setState(() {
                   //! hardcoded reset value
                   _currentSliderValue = 0;

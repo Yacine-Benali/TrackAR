@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.5.0+15
+version: 1.6.0+16
 
 environment:
   sdk: ">=2.7.0 <3.0.0"
@@ -26,15 +26,17 @@ dependencies:
   modal_bottom_sheet: ^1.0.0+1
   #state mangement and bloc
   #utils
-  firebase_core: ^0.5.3
-  firebase_analytics: ^6.3.0
-  firebase_crashlytics: ^0.2.4
+  firebase_core: ^1.1.0
+  firebase_analytics: ^8.0.3
+  firebase_crashlytics: ^2.0.2
   #platform acess
-  shared_preferences: ^0.5.8
-  path_provider: ^1.6.24
+  native_device_orientation: ^1.0.0
+  shared_preferences: ^2.0.5
+  path_provider: ^2.0.1
   wakelock: ^0.2.1+1
   flutter_linkify: ^5.0.2
   url_launcher: ^6.0.3
+  vector_math: ^2.1.0
   arcore_flutter_plugin:
    path: arcore_flutter_plugin
   # dead
@@ -60,6 +62,7 @@ flutter_icons:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lint: ^1.5.3
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

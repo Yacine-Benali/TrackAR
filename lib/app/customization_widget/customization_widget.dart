@@ -82,6 +82,7 @@ class _CustomizationWidgetState extends State<CustomizationWidget> {
                       child: Icon(
                         Icons.restore,
                         size: 30,
+                        color: Colors.white,
                       ),
                     ),
                   ),

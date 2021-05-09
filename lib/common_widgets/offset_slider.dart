@@ -64,6 +64,7 @@ class _OffsetSliderState extends State<OffsetSlider> {
                   child: Icon(
                     Icons.restore,
                     size: 30,
+                    color: Colors.white,
                   ),
                 ),
               ),

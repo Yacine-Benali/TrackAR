@@ -69,6 +69,7 @@ class _TextField2State extends State<TextField2> {
                       child: Icon(
                         Icons.edit,
                         size: 30,
+                        color: Colors.white,
                       ),
                     ),
                   ),

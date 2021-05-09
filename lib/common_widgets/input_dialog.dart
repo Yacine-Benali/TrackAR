@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 class InputDialog extends StatelessWidget {
@@ -38,7 +40,10 @@ class InputDialog extends StatelessWidget {
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(),
-          child: Text('CANCEL'),
+          child: Text(
+            'CANCEL',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
         TextButton(
           onPressed: () {
@@ -47,7 +52,10 @@ class InputDialog extends StatelessWidget {
               Navigator.of(context).pop();
             }
           },
-          child: Text('Ok'),
+          child: Text(
+            'Ok',
+            style: TextStyle(color: Colors.white),
+          ),
         ),
       ],
     );

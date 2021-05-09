@@ -65,6 +65,7 @@ class _SentivitySliderState extends State<SentivitySlider> {
                   child: Icon(
                     Icons.restore,
                     size: 30,
+                    color: Colors.white,
                   ),
                 ),
               ),

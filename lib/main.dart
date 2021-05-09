@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:headtrack/app/home_screen.dart';
+import 'package:headtrack/services/firebase_messaging_service.dart';
 import 'package:wakelock/wakelock.dart';
 
 Future<void> main() async {
@@ -22,6 +23,7 @@ Future<void> main() async {
   if (kDebugMode) {
     await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(false);
   }
+  FirebaseMessagingService().configFirebaseNotification();
   runApp(MyApp());
 }
 

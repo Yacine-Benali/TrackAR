@@ -10,3 +10,4 @@ linter:
     prefer_const_constructors: false
     prefer_final_locals: false
     avoid_classes_with_only_static_members: false
+    sort_pub_dependencies: false

@@ -81,8 +81,9 @@ class HomeBloc {
     ret[2] *= 180 / math.pi;
 
     q[0] = ret[0];
-    q[2] = ret[1];
     q[1] = ret[2];
+    q[2] = ret[1];
+
     return q;
   }
 

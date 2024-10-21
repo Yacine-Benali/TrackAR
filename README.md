@@ -5,7 +5,7 @@
 
 |                                             Main Screen                                              |                                             Settings Screen                                             |
 | :----------------------------------------------------------------------------------------------------: | :----------------------------------------------------------------------------------------------------: |
-| ![TrackAR App Screenshot](./playstore/7-inch-tab/Screenshot_1610046761.png.jpg) | ![TrackAR App Screenshot](./playstore/7-inch-tab/Screenshot_1610046774.png.png) |
+| ![TrackAR App Screenshot](./playstore/7-inch%20tab/Screenshot_1610046761.png) | ![TrackAR App Screenshot](./playstore/7-inch%20tab/Screenshot_1610046774.png) |
 
 
 
